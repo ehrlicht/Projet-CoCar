@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+    var drivers = [];
+
+    var driver1 = {};
+    driver1.id = 1;
+    driver1.nom = "Dupont";
+    driver1.prenom = "Jerome";
+    driver1.email = "dupont@hesge.ch";
+    driver1.carCapacity = Math.floor(Math.random() * (5-2)) + 2;
+    driver1.region = "Carouge";
+    drivers.push(driver1)
+
+    var driver2 = {};
+    driver2.id = 2;
+    driver2.nom = "Diep";
+    driver2.prenom = "Edouard";
+    driver2.email = "eddy.diep@hesge.ch";
+    driver2.carCapacity = Math.floor(Math.random() * (5-2)) + 2;
+    driver2.region = "Vesenaz";
+    drivers.push(driver2)
+
+    var driver3 = {};
+    driver3.id = 3;
+    driver3.nom = "Pereira Ferreira";
+    driver3.prenom = "Hugo";
+    driver3.email = "hugo_p_f@hesge.ch";
+    driver3.carCapacity = Math.floor(Math.random() * (5-2)) + 2;
+    driver3.region = "Onex";
+    drivers.push(driver3)
+
+    var driver4 = {};
+    driver4.id = 4;
+    driver4.nom = "Ehrlich";
+    driver4.prenom = "Thery";
+    driver4.email = "tehrlich@hesge.ch";
+    driver4.carCapacity = Math.floor(Math.random() * (5-2)) + 2;
+    driver4.region = "Carouge";
+    drivers.push(driver4)
+
+    var driver5 = {};
+    driver5.id = 5;
+    driver5.nom = "Romano";
+    driver5.prenom = "David";
+    driver5.email = "d.romano@hesge.ch";
+    driver5.carCapacity = Math.floor(Math.random() * (5-2)) + 2;
+    driver5.region = "Carouge";
+    drivers.push(driver5)
+
+    var driver6 = {};
+    driver6.id = 6;
+    driver6.nom = "Prince";
+    driver6.prenom = "Albert";
+    driver6.email = "smr@hesge.ch";
+    driver6.carCapacity = Math.floor(Math.random() * (5-2)) + 2;
+    driver6.region = "Onex";
+    drivers.push(driver6)
+
+    var driver7 = {};
+    driver7.id = 7;
+    driver7.nom = "Kunz";
+    driver7.prenom = "Francis";
+    driver7.email = "fkunz@hesge.ch";
+    driver7.carCapacity = Math.floor(Math.random() * (5-2)) + 2;
+    driver7.region = "Onex";
+    drivers.push(driver7)
+
+    var driver8 = {};
+    driver8.id = 8;
+    driver8.nom = "Roth";
+    driver8.prenom = "Tibor";
+    driver8.email = "tr@hesge.ch";
+    driver8.carCapacity = Math.floor(Math.random() * (5-2)) + 2;
+    driver8.region = "Paquis";
+    drivers.push(driver8)
+
+    var jsonDrivers = [];
+
+    for (let i = 0; i < drivers.length; i++) {
+        var jsonDriver = JSON.stringify(drivers[i]);
+        document.write(jsonDriver + "<br>");
+        jsonDrivers.push(jsonDriver);
+    }
+
+
+
+</script>
+</body>
+</html>
