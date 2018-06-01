@@ -1,57 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <script src="js/jquery-3.3.1.js"></script>
     <meta charset="UTF-8">
     <title>Interface chauffeur</title>
     <link href="css/semantic.min.css" rel="stylesheet" type="text/css">
 </head>
 <!-- id,nom,prenom,email,carCapacity,region -->
 <body>
-    <div id = "container" class="ui segment">
+    <div class="ui segment">
         <table class="ui inverted table">
-
+            <thead style="background-color: #fffc28">
+                <tr>
+                    <th>Prénom</th>
+                    <th>Nom</th>
+                    <th>Email</th>
+                    <th>Places disponibles</th>
+                    <th>Région</th>
+                </tr>
+            </thead>
         </table>
     </div>
-
-    <script>
-
-        $.get( "http://groups.cowaboo.net/2018/group01/public/api/observatory?observatoryId=coCar", function( data ) {
-            $( ".result" ).html( data );
-            var values = data.dictionary.entries;
-            var drivers = new Array();
-            for (var key in values) {
-                var driver = JSON.parse(values[key].value);
-                drivers.push(driver);
-                console.log(driver)
-            }
-            afficherListeDrivers(drivers);
-            document.write(drivers);
-            alert( "Load was performed." );
-        });
-
-        function afficherListeDrivers (drivers) {
-            $("#container").append("" +
-                "<table>" +
-                "<thead>\n" +
-                "  <tr>\n" +
-                "      <th>Chauffeur</th>\n" +
-                "      <th>Email</th>\n" +
-                "      <th>Places disponibles</th>\n" +
-                "      <th>Région</th>\n" +
-                "  </tr>\n" +
-                "</thead>\n" +
-                "<tbody>\n"
-            );
-            for (var i = 0; i < drivers.length; i++) {
-                $("#container").append("<tr><td>drivers[i].prenom + " " + drivers[i].nom</td><td>drivers[i].email</td><td>drivers[i].carCapacity</td><td>drivers[i].region</td></tr>"
-            }
-            $("#container").append(" " +
-                "</tbody>\n" +
-                "</table>"
-            );
-
-        }
-    </script>
 </body>
 </html>
