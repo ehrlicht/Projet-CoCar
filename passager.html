@@ -1,19 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script src="js/jquery-3.3.1.js"></script>
     <meta charset="UTF-8">
-    <title>Accueil chauffeur</title>
+    <title>Interface chauffeur</title>
+    <link href="css/semantic.min.css" rel="stylesheet" type="text/css">
 </head>
 <body>
-<div id = "container" class="ui segment">
-    <table class="ui inverted table">
-
-    </table>
-</div>
-
+<div id = "container" class="ui segment"></div>
 <script>
 
-    $.get( "http://groups.cowaboo.net/2018/group01/public/api/observatory?observatoryId=coCar", function( data ) {
+    $.get("http://groups.cowaboo.net/2018/group01/public/api/observatory?observatoryId=coCar", function( data ) {
         $( ".result" ).html( data );
         var values = data.dictionary.entries;
         var drivers = new Array();
@@ -23,14 +20,13 @@
             console.log(driver)
         }
         afficherListeDrivers(drivers);
-        document.write(drivers);
         alert( "Load was performed." );
     });
 
     function afficherListeDrivers (drivers) {
-        $("#container").append("" +
-            "<table>" +
-            "<thead>\n" +
+        var tableStr = "" +
+            "<table class=\"ui inverted table\">" +
+            "<thead style=\"background-color: #fffc28\">\n" +
             "  <tr>\n" +
             "      <th>Chauffeur</th>\n" +
             "      <th>Email</th>\n" +
@@ -38,15 +34,14 @@
             "      <th>Région</th>\n" +
             "  </tr>\n" +
             "</thead>\n" +
-            "<tbody>\n"
-        );
+            "<tbody>\n";
         for (var i = 0; i < drivers.length; i++) {
-            $("#container").append("<tr><td>drivers[i].prenom + " " + drivers[i].nom</td><td>drivers[i].email</td><td>drivers[i].carCapacity</td><td>drivers[i].region</td></tr>"
+            tableStr +="<tr><td>"+drivers[i].prenom+" "+drivers[i].nom+"</td><td>"+drivers[i].email+"</td><td>"+drivers[i].carCapacity+"</td><td>"+drivers[i].region+"</td></tr>";
         }
-        $("#container").append(" " +
+        tableStr += " " +
             "</tbody>\n" +
-            "</table>"
-        );
+            "</table>";
+        $("#container").html(tableStr);
 
     }
 </script>
