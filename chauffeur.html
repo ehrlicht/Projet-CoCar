@@ -20,7 +20,6 @@
                 console.log(driver)
             }
             afficherListeDrivers(drivers);
-            document.write(drivers);
             alert( "Load was performed." );
         });
 
@@ -38,7 +37,7 @@
                 "<tbody>\n"
             );
             for (var i = 0; i < drivers.length; i++) {
-                $("#container").append("<tr><td>drivers[i].prenom drivers[i].nom</td><td>drivers[i].email</td><td>drivers[i].carCapacity</td><td>drivers[i].region</td></tr>");
+                $("#container").append("<tr><td>"+drivers[i].prenom+" "+drivers[i].nom+"</td><td>"+drivers[i].email+"</td><td>"+drivers[i].carCapacity+"</td><td>"+drivers[i].region+"</td></tr>");
             }
             $("#container").append(" " +
                 "</tbody>\n" +
