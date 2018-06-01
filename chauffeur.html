@@ -6,10 +6,14 @@
     <title>Interface chauffeur</title>
     <link href="css/semantic.min.css" rel="stylesheet" type="text/css">
 </head>
-<body>
-<div id = "container" class="ui segment"></div>
+<body class="ui inverted segment">
+<div id="app">
+    <div class="ui inverted segments">
+        <div class="ui inverted segment titre center aligned"><h1 style="font-size:2.5em;color: yellow;">CarPool</h1></div>
+        <div id = "container" class="ui inverted segment center aligned" style="height: 100%"></div>
+    </div>
+</div>
 <script>
-
     $.get("http://groups.cowaboo.net/2018/group01/public/api/observatory?observatoryId=coCar", function( data ) {
         $( ".result" ).html( data );
         var values = data.dictionary.entries;
