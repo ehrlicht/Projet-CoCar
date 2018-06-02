@@ -1,16 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <script src="js/jquery-3.3.1.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
     <meta charset="UTF-8">
     <title>Interface chauffeur</title>
     <link href="css/semantic.min.css" rel="stylesheet" type="text/css">
 </head>
 <body class="ui inverted segment">
-<div id="app">
+<div id="app" class="container">
     <div class="ui inverted segments">
-        <div class="ui inverted segment titre center aligned"><h1 style="font-size:2.5em;color: darkorange;"><img src="orange-taxi-512.png" width="30px" height="30px"/>CarPool</h1></div>
+        <div class="ui inverted segment titre center aligned"><h1 style="font-size:2.5em;color: darkorange;"><img src="ressources/orange-taxi-512.png" width="30px" height="30px"/>CarPool</h1></div>
         <div id = "container" class="ui inverted segment center aligned" style="width:1000px; margin:0 auto;"></div>
+    </div>
+</div>
+<div class="modal fade" tabindex="-1" role="dialog" id="myModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-body">
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="inputGroup-sizing-default">Clé publique</span>
+                        </div>
+                        <input type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+                    </div>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="inputGroup-sizing-default">Clé secrète</span>
+                        </div>
+                        <input type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary">Save changes</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
     </div>
 </div>
 <script>
@@ -21,7 +56,6 @@
         for (var key in values) {
             var driver = JSON.parse(values[key].value);
             drivers.push(driver);
-            console.log(driver)
         }
         afficherListeDrivers(drivers);
         alert( "Load was performed." );
@@ -40,13 +74,18 @@
             "</thead>\n" +
             "<tbody>\n";
         for (var i = 0; i < drivers.length; i++) {
-            tableStr +="<tr><td>"+drivers[i].prenom+" "+drivers[i].nom+"</td><td>"+drivers[i].email+"</td><td>"+drivers[i].carCapacity+"</td><td>"+drivers[i].region+"</td></tr>";
+            tableStr +="<tr><td>"+drivers[i].prenom+" "+drivers[i].nom+"</td><td>"+drivers[i].email+"</td><td><b>"+drivers[i].carCapacity+"</b>&nbsp;&nbsp;&nbsp;&nbsp;<button id='btnAdd' type=\"button\" class=\"btn btn-outline-warning\">S'ajouter</button></td><td>"+drivers[i].region+"</td></tr>";
         }
         tableStr += " " +
             "</tbody>\n" +
             "</table>";
         $("#container").html(tableStr);
 
+        $(document).ready(function(){
+            $("#btnAdd").click(function(){
+                $("#myModal").modal();
+            });
+        });
     }
 </script>
 </body>
