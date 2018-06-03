@@ -95,15 +95,14 @@
     }
 
         $('#reserver').click(function() {
-            $.get("http://groups.cowaboo.net/2018/group01/public/api/user/balance?public="+$('#publicKey').val() ,function( balance ) {
+            var userGetReq = "http://groups.cowaboo.net/2018/group01/public/api/user/balance?public="+$('#publicKey').val();
+            $.get(userGetReq ,function( balance ) {
                 $( ".result" ).html( balance );
                 if (balance.value > 0) {
-
+                    var person = drivers.indexOf()
                 }
             });
         });
-
-
 
 </script>
 </body>
