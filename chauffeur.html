@@ -79,14 +79,12 @@
             "</thead>\n" +
             "<tbody>\n";
         for (var i = 0; i < drivers.length; i++) {
-            tableStr +="<tr><td>"+drivers[i].prenom+" "+drivers[i].nom+"</td><td>"+drivers[i].email+"</td><td><b>"+drivers[i].carCapacity+"</b>&nbsp;&nbsp;&nbsp;&nbsp;<button id='btnAdd' type=\"button\" class=\"btn btn-outline-warning\" data-toggle='modal' data-target='#myModal'>S'ajouter</button></td><td>"+drivers[i].region+"</td></tr>";
+            tableStr +="<tr><td>"+drivers[i].prenom+" "+drivers[i].nom+"</td><td>"+drivers[i].email+"</td><td><b>"+drivers[i].carCapacity+"</b>&nbsp;&nbsp;&nbsp;&nbsp;<button id='btnAdd"+i+"' value='"+i+"' type=\"button\" class=\"btn btn-outline-warning\" data-toggle='modal' data-target='#myModal'>S'ajouter</button></td><td>"+drivers[i].region+"</td></tr>";
         }
         tableStr += " " +
             "</tbody>\n" +
             "</table>";
         $("#container").html(tableStr);
-
-
     }
 </script>
 </body>
