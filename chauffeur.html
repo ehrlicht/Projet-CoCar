@@ -14,8 +14,9 @@
 <!-- table -->
 <div id="app" class="container">
     <div class="ui inverted segments">
-        <div class="ui inverted segment titre center aligned"><h1 style="font-size:2.5em;color: darkorange;"><img src="ressources/orange-taxi-512.png" width="30px" height="30px"/>CarPool</h1></div>
-        <div id = "container" class="ui inverted segment center aligned" style="width:1000px; margin:0 auto;"></div>
+        <div class="ui inverted segment titre center aligned"><h1 style="font-size:2.5em;color: darkorange;"><img
+                src="ressources/orange-taxi-512.png" width="30px" height="30px"/>CarPool</h1></div>
+        <div id="container" class="ui inverted segment center aligned" style="width:1000px; margin:0 auto;"></div>
     </div>
 </div>
 
@@ -35,13 +36,15 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text" id="inputGroup-sizing-default1">Clé publique</span>
                         </div>
-                        <input id="publicKey" type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+                        <input id="publicKey" type="text" class="form-control" aria-label="Default"
+                               aria-describedby="inputGroup-sizing-default">
                     </div>
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">
                             <span class="input-group-text" id="inputGroup-sizing-default2">Clé secrète</span>
                         </div>
-                        <input id="secretKey" type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+                        <input id="secretKey" type="text" class="form-control" aria-label="Default"
+                               aria-describedby="inputGroup-sizing-default">
                     </div>
                     <div>
                         <input type="hidden" id="idDriver"/>
@@ -49,7 +52,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" id="reserver" class="btn btn-primary">Reserver</button>
+                <button type="button" id="reserver" class="btn btn-primary" data-dismiss="modal">Reserver</button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
             </div>
         </div>
@@ -57,19 +60,27 @@
 </div>
 
 <script>
-    $.get("http://groups.cowaboo.net/2018/group01/public/api/observatory?observatoryId=coCar", function( data ) {
-        $( ".result" ).html( data );
-        var values = data.dictionary.entries;
-        var drivers = new Array();
-        for (var key in values) {
-            var driver = JSON.parse(values[key].value);
-            drivers.push(driver);
-        }
-        afficherListeDrivers(drivers);
-        alert( "Load was performed." );
-    });
+    var drivers = [];
+    var hashcodes = [];
+    getAll();
 
-    function afficherListeDrivers (drivers) {
+    function getAll() {
+        $.get("http://groups.cowaboo.net/2018/group01/public/api/observatory?observatoryId=coCar", function (data) {
+            $(".result").html(data);
+            var values = data.dictionary.entries;
+            drivers = new Array();
+            for (var key in values) {
+                var driver = JSON.parse(values[key].value);
+                hashcodes[driver.id] = key;
+                drivers.push(driver);
+            }
+            afficherListeDrivers(drivers);
+        });
+    }
+
+    var driverID;
+
+    function afficherListeDrivers(drivers) {
         var tableStr = "" +
             "<table class=\"ui inverted table\">" +
             "<thead style=\"background-color:darkorange\">\n" +
@@ -81,27 +92,64 @@
             "  </tr>\n" +
             "</thead>\n" +
             "<tbody>\n";
-        for (var i = 1; i < drivers.length; i++) {
-            tableStr +="<tr><td>"+drivers[i].prenom+" "+drivers[i].nom+"</td><td>"+drivers[i].email+"</td><td><b>"+drivers[i].carCapacity+"</b>&nbsp;&nbsp;&nbsp;&nbsp;<button id='btnAdd' value='"+drivers[i].id+"' type='button' class='btn btn-outline-warning btnAdd' data-toggle='modal' data-target='#myModal'>S'ajouter</button></td><td>"+drivers[i].region+"</td></tr>";
+        for (var i = 0; i < drivers.length; i++) {
+            if (drivers[i].carCapacity > 0) {
+                tableStr += "<tr id='driverRow'><td>" + drivers[i].prenom + " " + drivers[i].nom + "</td><td>" + drivers[i].email + "</td><td><b>" + drivers[i].carCapacity + "</b>&nbsp;&nbsp;&nbsp;&nbsp;<button id='btnAdd' value='" + drivers[i].id + "' type='button' class='btn btn-outline-warning btnAdd' data-toggle='modal' data-target='#myModal'>S'ajouter</button></td><td>" + drivers[i].region + "</td></tr>";
+            } else {
+                tableStr += "<tr id='driverRow'><td>" + drivers[i].prenom + " " + drivers[i].nom + "</td><td>" + drivers[i].email + "</td><td><b>&nbsp;&nbsp;&nbsp;&nbsp;</b>&nbsp;&nbsp;&nbsp;&nbsp;<button disabled id='btnAdd' value='" + drivers[i].id + "' type='button' class='btn btn-outline-warning btnAdd' data-toggle='modal' data-target='#myModal'>Complet</button></td><td>" + drivers[i].region + "</td></tr>";
+            }
         }
         tableStr += " " +
             "</tbody>\n" +
             "</table>";
         $("#container").html(tableStr);
+
         $(".btnAdd").click(evt => {
             console.log(evt.target)
             $("#idDriver").val($(evt.target).val())
+            driverID = $(evt.target).val()
         })
     }
-        $('#reserver').click(function() {
-            var userGetReq = "http://groups.cowaboo.net/2018/group01/public/api/user/balance?public="+$('#publicKey').val();
-            $.get(userGetReq ,function( balance ) {
-                $( ".result" ).html( balance );
-                if (balance.value > 0) {
-                    drivers.find()
+
+    $('#reserver').click(function () {
+        if ($('#publicKey').val() === "") {
+            alert("Veuillez entrer une clé publique et secrete valides");
+            return;
+        }
+        var userGetReq = "http://groups.cowaboo.net/2018/group01/public/api/user/balance?public=" + $('#publicKey').val();
+        $.get(userGetReq, function (balance) {
+            $(".result").html(balance);
+            console.log("Value " + balance);
+            if (balance >= 0) {
+                //permet de trouver le driver que l'on souhaite decrementer
+                let driver = drivers.find(d => {
+                    return d.id == driverID
+                });
+                if (driver.carCapacity > 0) {
+                    driver.carCapacity -= 1;
+                    //$.put("curl -X PUT --header 'Content-Type: application/x-www-form-urlencoded' --header 'Accept: text/html' -d 'secretKey=" + $('#secretKey').val() + "&observatoryId=coCar&hash=" + hashcodes[driverID] + "&newValue=" + JSON.stringify(driver) + "' 'http://groups.cowaboo.net/2018/group01/public/api/entry'");
+                    /*$.ajax({
+                        url: "http://groups.cowaboo.net/2018/group01/public/api/entry",
+                        beforeSend: function(xhr) {
+                            xhr.setRequestHeader("Authorization", "Basic " + btoa("username:password"));
+                        },
+                        type: 'POST',
+                        dataType: 'json',
+                        contentType: 'application/json',
+                        processData: false,
+                        data: '{"foo":"bar"}',
+                        success: function (data) {
+                            alert(JSON.stringify(data));
+                        },
+                        error: function(){
+                            alert("Cannot get data");
+                        }
+                    });*/
+                    getAll();
                 }
-            });
+            }
         });
+    });
 
 </script>
 </body>
