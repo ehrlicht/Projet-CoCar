@@ -44,11 +44,7 @@
                         <input id="secretKey" type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
                     </div>
                     <div>
-                        <script>
-                            $(document).ready(function () {
-                                console.log(document.getElementById("btnAdd").value);
-                            });
-                        </script>
+                        <input type="hidden" id="idDriver"/>
                     </div>
                 </div>
             </div>
@@ -86,20 +82,23 @@
             "</thead>\n" +
             "<tbody>\n";
         for (var i = 1; i < drivers.length; i++) {
-            tableStr +="<tr><td>"+drivers[i].prenom+" "+drivers[i].nom+"</td><td>"+drivers[i].email+"</td><td><b>"+drivers[i].carCapacity+"</b>&nbsp;&nbsp;&nbsp;&nbsp;<button id='btnAdd' value='"+i+"' type='button' class='btn btn-outline-warning' data-toggle='modal' data-target='#myModal'>S'ajouter</button></td><td>"+drivers[i].region+"</td></tr>";
+            tableStr +="<tr><td>"+drivers[i].prenom+" "+drivers[i].nom+"</td><td>"+drivers[i].email+"</td><td><b>"+drivers[i].carCapacity+"</b>&nbsp;&nbsp;&nbsp;&nbsp;<button id='btnAdd' value='"+drivers[i].id+"' type='button' class='btn btn-outline-warning btnAdd' data-toggle='modal' data-target='#myModal'>S'ajouter</button></td><td>"+drivers[i].region+"</td></tr>";
         }
         tableStr += " " +
             "</tbody>\n" +
             "</table>";
         $("#container").html(tableStr);
+        $(".btnAdd").click(evt => {
+            console.log(evt.target)
+            $("#idDriver").val($(evt.target).val())
+        })
     }
-
         $('#reserver').click(function() {
             var userGetReq = "http://groups.cowaboo.net/2018/group01/public/api/user/balance?public="+$('#publicKey').val();
             $.get(userGetReq ,function( balance ) {
                 $( ".result" ).html( balance );
                 if (balance.value > 0) {
-                    var person = drivers.indexOf()
+                    drivers.find()
                 }
             });
         });
