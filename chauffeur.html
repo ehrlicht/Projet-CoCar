@@ -6,7 +6,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
     <meta charset="UTF-8">
-    <title>Interface chauffeur</title>
+    <title>CoCar</title>
     <link href="css/semantic.min.css" rel="stylesheet" type="text/css">
 </head>
 <body class="ui inverted segment">
@@ -15,10 +15,13 @@
 <div id="app" class="container">
     <div class="ui inverted segments">
         <div class="ui inverted segment titre center aligned"><h1 style="font-size:2.5em;color: darkorange;"><img
-                src="ressources/orange-taxi-512.png" width="30px" height="30px"/>CarPool</h1></div>
+                src="ressources/orange-taxi-512.png" width="30px" height="30px"/>CoCar</h1></div>
         <div id="container" class="ui inverted segment center aligned" style="width:1000px; margin:0 auto;"></div>
     </div>
 </div>
+<!-- <div>
+    <button id='btnAdd1' type='button' class='btn btn-outline-warning'>Libérer</button>
+</div> -->
 
 <!-- Modal -->
 <div class="modal fade" tabindex="-1" role="dialog" id="myModal">
@@ -62,6 +65,8 @@
 <script>
     var drivers = [];
     var hashcodes = [];
+    var driverID;
+
     getAll();
 
     function getAll() {
@@ -74,11 +79,14 @@
                 hashcodes[driver.id] = key;
                 drivers.push(driver);
             }
+            drivers.sort(function (a, b) {
+                if (a.prenom < b.prenom) return -1;
+                if (a.prenom > b.prenom) return 1;
+                return 0;
+            });
             afficherListeDrivers(drivers);
         });
     }
-
-    var driverID;
 
     function afficherListeDrivers(drivers) {
         var tableStr = "" +
@@ -105,7 +113,6 @@
         $("#container").html(tableStr);
 
         $(".btnAdd").click(evt => {
-            console.log(evt.target)
             $("#idDriver").val($(evt.target).val())
             driverID = $(evt.target).val()
         })
@@ -119,38 +126,48 @@
         var userGetReq = "http://groups.cowaboo.net/2018/group01/public/api/user/balance?public=" + $('#publicKey').val();
         $.get(userGetReq, function (balance) {
             $(".result").html(balance);
-            console.log("Value " + balance);
             if (balance >= 0) {
                 //permet de trouver le driver que l'on souhaite decrementer
                 let driver = drivers.find(d => {
                     return d.id == driverID
                 });
-                if (driver.carCapacity > 0) {
+                if (driver.carCapacity >= 0) {
                     driver.carCapacity -= 1;
-                    //$.put("curl -X PUT --header 'Content-Type: application/x-www-form-urlencoded' --header 'Accept: text/html' -d 'secretKey=" + $('#secretKey').val() + "&observatoryId=coCar&hash=" + hashcodes[driverID] + "&newValue=" + JSON.stringify(driver) + "' 'http://groups.cowaboo.net/2018/group01/public/api/entry'");
-                    /*$.ajax({
+                    $.ajax({
                         url: "http://groups.cowaboo.net/2018/group01/public/api/entry",
-                        beforeSend: function(xhr) {
-                            xhr.setRequestHeader("Authorization", "Basic " + btoa("username:password"));
+                        data: {
+                            "observatoryId": "coCar",
+                            "hash": hashcodes[driverID],
+                            "secretKey": $('#secretKey').val(),
+                            "newValue": JSON.stringify(driver)
                         },
-                        type: 'POST',
-                        dataType: 'json',
-                        contentType: 'application/json',
-                        processData: false,
-                        data: '{"foo":"bar"}',
-                        success: function (data) {
-                            alert(JSON.stringify(data));
-                        },
-                        error: function(){
-                            alert("Cannot get data");
-                        }
-                    });*/
-                    getAll();
+                        method: "PUT"
+                    }).done(function (response) {
+                        getAll();
+                    });
                 }
             }
         });
     });
 
+    /*$('#btnAdd1').click(function () {
+        console.log(drivers.length);
+        for (let i = 1; i < drivers.length; i++) {
+            drivers[i].carCapacity += 1;
+            $.ajax({
+                url: "http://groups.cowaboo.net/2018/group01/public/api/entry",
+                data: {
+                    "observatoryId": "coCar",
+                    "hash": hashcodes[i],
+                    "secretKey": 'SD7QT27MEA7RXTHPR2ULVNFOSYWLZE5VUXEY2SQFUELS2RE5E7CAAQ4E',
+                    "newValue": JSON.stringify(drivers[i])
+                },
+                method: "PUT"
+            }).done(function (response) {
+                getAll();
+            });
+        }
+    });*/
 </script>
 </body>
 </html>
